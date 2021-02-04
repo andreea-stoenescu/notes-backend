@@ -1,25 +1,30 @@
 service: app
 
 provider:
-    name: aws
-    region: us-east-1
-    runtime: provided.al2
+  name: aws
+  region: us-east-1
+  runtime: provided.al2
+  apiGateway:
+  binaryMediaTypes:
+    - "*/*"
+  environment:
+    BREF_BINARY_RESPONSES: "1"
 
 plugins:
-    - ./vendor/bref/bref
+  - ./vendor/bref/bref
 
 functions:
-    api:
-        handler: index.php
-        description: ''
-        timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        layers:
-            - ${bref:layer.php-74-fpm}
-        events:
-            -   httpApi: '*'
+  api:
+    handler: index.php
+    description: ""
+    timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+    layers:
+      - ${bref:layer.php-74-fpm}
+    events:
+      - httpApi: "*"
 
 # Exclude files from deployment
 package:
-    exclude:
-        - 'node_modules/**'
-        - 'tests/**'
+  exclude:
+    - "node_modules/**"
+    - "tests/**"
